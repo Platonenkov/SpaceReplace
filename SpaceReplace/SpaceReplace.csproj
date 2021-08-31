@@ -4,6 +4,13 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>Icon.ico</ApplicationIcon>
+    <Authors>https://github.com/Platonenkov</Authors>
+    <Company>https://github.com/Platonenkov</Company>
+    <Copyright>https://github.com/Platonenkov</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/Platonenkov/SpaceReplace</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Platonenkov/SpaceReplace</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
