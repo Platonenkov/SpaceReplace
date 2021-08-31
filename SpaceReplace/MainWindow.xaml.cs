@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -30,11 +32,14 @@ namespace WpfApp2
                 return;
             switch ((string)radio.Content)
             {
-                case "CamelCase": Space = SpaseType.CamelCase;
+                case "CamelCase":
+                    Space = SpaseType.CamelCase;
                     break;
-                case "_": Space = SpaseType.Underline;
+                case "_":
+                    Space = SpaseType.Underline;
                     break;
-                default: Space = SpaseType.Hyphen;
+                default:
+                    Space = SpaseType.Hyphen;
                     break;
             }
             DoWork(Input?.Text);
@@ -49,48 +54,63 @@ namespace WpfApp2
 
         private void DoWork(string text)
         {
-            if(string.IsNullOrWhiteSpace(text))
+            if (string.IsNullOrWhiteSpace(text))
             {
-                if(Output is not null)
+                if (Output is not null)
                     Output.Text = string.Empty;
-                if(Status is not null)
+                if (Status is not null)
                     Status.Text = string.Empty;
                 return;
-            } 
+            }
             var new_text = string.Empty;
             switch (Space)
             {
                 case SpaseType.CamelCase:
-                {
-                    Output.Text = ReplaceText(text, ' ', '_');
-                    for (var i = 0; i < text.Length; i++)
                     {
-                        var current = text[i];
-                        if (current == ' ')
-                            continue;
-                        if (i == 0 || i > 0 && text[i - 1] == ' ')
+                        Output.Text = ReplaceText(text, ' ', '_');
+                        for (var i = 0; i < text.Length; i++)
                         {
-                            new_text += $"{current}".ToUpper();
-                            continue;
+                            var current = text[i];
+                            if (current is ' ' or '-' or '_')
+                                continue;
+                            if (i == 0 || i > 0 && text[i - 1] is ' ' or '-' or '_')
+                            {
+                                new_text += $"{current}".ToUpper();
+                                continue;
+                            }
+
+                            new_text += current;
                         }
 
-                        new_text += current;
+
+                        break;
                     }
-
-
-                    break;
-                }
                 case SpaseType.Underline:
-                {
-                    new_text = ReplaceText(text, ' ', '_');
-                    break;
-                }
+                    {
+                        new_text = ReplaceText(text, ' ', '_');
+                        new_text = ReplaceText(new_text, '-', '_');
+                        break;
+                    }
                 case SpaseType.Hyphen:
-                {
-                    new_text = ReplaceText(text, ' ', '-');
-                    break;
-                }
+                    {
+                        new_text = ReplaceText(text, ' ', '-');
+                        new_text = ReplaceText(new_text, '_', '-');
+                        break;
+                    }
                 default: throw new ArgumentOutOfRangeException();
+            }
+            if (true)
+            {
+                var temp = string.Empty;
+                foreach (var t in new_text)
+                {
+                    if (t is '-' or '_')
+                        temp += t;
+
+                    if (char.IsLetterOrDigit(t))
+                        temp += t;
+                }
+                new_text = temp;
             }
             Output.Text = new_text;
             try
