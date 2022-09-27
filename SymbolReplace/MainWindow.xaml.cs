@@ -67,15 +67,15 @@ namespace WpfApp2
 
             new_text = new_text.Trim();
             Output.Text = new_text;
-            //try
-            //{
-            //    Clipboard.SetText(new_text);
-            //    Status.Text = Clipboard.GetText();
-            //}
-            //catch (Exception)
-            //{
-            //    Status.Text = "Ошибка копирования текста в буфер";
-            //}
+            try
+            {
+                Clipboard.SetText(new_text);
+                Status.Text = Clipboard.GetText();
+            }
+            catch (Exception)
+            {
+                Status.Text = "Error to copy to clipboard";
+            }
         }
     }
 }
