@@ -1,0 +1,67 @@
+﻿<Window x:Class="WpfApp2.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        Title="Replacing text and carriage characters"
+        mah:DialogParticipation.Register="{Binding}"
+        WindowStartupLocation="CenterScreen"
+        mc:Ignorable="d"
+        Topmost="{Binding IsChecked ,ElementName=check}"
+        Width="600"
+        Height="600">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto"
+                           MinHeight="20" />
+            <RowDefinition Height="*"
+                           MinHeight="20" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <DockPanel>
+            <CheckBox x:Name="check"
+                      Content="Topmost"
+                      IsChecked="True"
+                      DockPanel.Dock="Right"
+                      Margin="5,0" />
+
+            <TextBox x:Name="Symbols"
+                     Margin="5,5"
+                     TextChanged="Input_OnTextChanged"
+                     mah:TextBoxHelper.ClearTextButton="True"
+                     mah:TextBoxHelper.Watermark="Symbols to remove, queue" />
+
+        </DockPanel>
+        <ScrollViewer Grid.Row="1">
+            <TextBox x:Name="Input"
+                     Margin="5 0 0 0"
+                     TextWrapping="Wrap"
+                     AcceptsReturn="True"
+                     TextChanged="Input_OnTextChanged"
+                     mah:TextBoxHelper.ClearTextButton="True"
+                     mah:TextBoxHelper.Watermark="Input text"
+                     MinHeight="100" />
+        </ScrollViewer>
+        <ScrollViewer Grid.Row="2" >
+            <TextBlock x:Name="Output"
+                       Margin="5 0 0 0"
+                       Text="Replacement result"
+                       TextWrapping="WrapWithOverflow"
+                       MinHeight="200"
+                       FontSize="16" />
+
+        </ScrollViewer>
+
+        <StackPanel Orientation="Horizontal"
+                    Grid.Row="3"
+                    VerticalAlignment="Bottom"
+                    Margin="5,0">
+            <TextBlock Text="Clipboard text: " />
+            <TextBlock x:Name="Status"
+                       TextWrapping="NoWrap" />
+        </StackPanel>
+
+    </Grid>
+</Window>
