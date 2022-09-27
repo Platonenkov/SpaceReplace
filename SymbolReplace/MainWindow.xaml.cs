@@ -57,21 +57,25 @@ namespace WpfApp2
                     case "\\r":
                         new_text = new_text.Replace('\r', ' ');
                         continue;
+                    case "  " or "   " or "    " or "     ":
+                        new_text = new_text.Replace(symbol, " ");
+                        continue;
                     default: new_text = new_text.Replace(symbol, string.Empty);
                         continue;
                 }
             }
 
+            new_text = new_text.Trim();
             Output.Text = new_text;
-            try
-            {
-                Clipboard.SetText(new_text);
-                Status.Text = Clipboard.GetText();
-            }
-            catch (Exception)
-            {
-                Status.Text = "Ошибка копирования текста в буфер";
-            }
+            //try
+            //{
+            //    Clipboard.SetText(new_text);
+            //    Status.Text = Clipboard.GetText();
+            //}
+            //catch (Exception)
+            //{
+            //    Status.Text = "Ошибка копирования текста в буфер";
+            //}
         }
     }
 }
