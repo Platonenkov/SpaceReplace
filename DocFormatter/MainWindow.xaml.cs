@@ -20,8 +20,6 @@ namespace WpfApp2
 
         private void Input_OnTextChanged(object Sender, TextChangedEventArgs E)
         {
-            if (Sender is not TextBox { })
-                return;
             if (autoBox.IsChecked==true)
                 if (Input.Text.Contains("```ts"))
                 {
@@ -125,26 +123,31 @@ namespace WpfApp2
                 result = result.Substring(0, result.Length - 3);
                 symb = "}";
                 arr = result.Split(symb);
-                result = arr.Aggregate(sub, (current, row) => current + $"{row.Trim()}{symb}");
-                result = result.Substring(0, result.Length - 1);
+                result = arr.Aggregate(sub, (current, row) => current + $"{row.Trim()}{symb}{Environment.NewLine}");
+                result = result.Substring(0, result.Length - 3);
 
                 arr = result.Split(Environment.NewLine);
 
                 for (var i = 0; i < arr.Length; i++)
                 {
+                    if (arr[i].StartsWith("///{"))
+                        arr[i] = arr[i].Replace("///{", "/// {");
+                    if (arr[i].StartsWith("///}"))
+                        arr[i] = arr[i].Replace("///}", "/// }");
+
                     if (arr[i].Contains("```ts"))
                     {
                         arr[i] = arr[i].Replace('\t', ' ');
                     }
 
                     if (arr[i].EndsWith("```"))
-                        arr[i] = arr[i].Replace("```", $"{Environment.NewLine}/// ```");
-                    if (arr[i].StartsWith($"///"))
+                        arr[i] = arr[i].Replace("```", $"/// ```");
+                    if (arr[i].StartsWith($"///")|| arr[i].StartsWith($"{Environment.NewLine}///"))
                         continue;
                     arr[i] = arr[i].Insert(0, $"/// {start_with}");
                 }
 
-                result = arr.Aggregate(sub, (current, row) => current + $"{row}{Environment.NewLine}");
+                result = arr.Where(a => !string.IsNullOrWhiteSpace(a.Trim('/'))).ToArray().Aggregate(sub, (current, row) => current + $"{row}{Environment.NewLine}");
 
             }
             Output.Text = result;
@@ -160,6 +163,6 @@ namespace WpfApp2
             }
         }
 
-        private void AddBr_OnClick(object Sender, RoutedEventArgs E) { DoWork(Input.Text); }
+        private void AddBr_OnClick(object Sender, RoutedEventArgs E) { Input_OnTextChanged(null,null); }
     }
 }
