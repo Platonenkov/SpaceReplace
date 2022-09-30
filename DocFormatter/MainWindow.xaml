@@ -26,13 +26,19 @@
                       IsChecked="True"
                       DockPanel.Dock="Right"
                       Margin="5,0" />
+            <CheckBox x:Name="autoBox"
+                      Content="summary/code auto"
+                      IsChecked="True"
+                      DockPanel.Dock="Right"
+                      Click="AddBr_OnClick"
+                      Margin="5,0" />
+
             <CheckBox x:Name="addBr"
                       Content="br tag"
                       IsChecked="True"
                       DockPanel.Dock="Right"
                       Click="AddBr_OnClick"
                       Margin="5,0" />
-
             <TextBox x:Name="Symbols"
                      Margin="5,5"
                      Width="250"

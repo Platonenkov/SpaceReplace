@@ -22,7 +22,23 @@ namespace WpfApp2
         {
             if (Sender is not TextBox { })
                 return;
+            if (true)
+                if (Input.Text.Contains("```ts"))
+                {
 
+                    SplitSymbol.Text = ",";
+                    addBr.IsChecked = false;
+                    Doc.Text = "code";
+                    StartWith.Text = "\\t";
+                }
+                else
+                {
+                    SplitSymbol.Text = ".";
+                    addBr.IsChecked = true;
+                    Doc.Text = "summary";
+                    StartWith.Text = string.Empty;
+
+                }
             DoWork(Input.Text);
         }
 
@@ -74,9 +90,8 @@ namespace WpfApp2
             if (start_with.Contains("\\t"))
                 start_with = start_with.Replace("\\t", "\t");
 
-            string result;
+            string result = string.Empty;
             var last_symbol_in_row = this.addBr.IsChecked == true ? @"<br/>" : string.Empty;
-
             if (!string.IsNullOrWhiteSpace(split))
             {
                 var rows = new_text.Split(split).Select(c => c.Trim()).Where(c => !string.IsNullOrWhiteSpace(c));
@@ -87,7 +102,7 @@ namespace WpfApp2
 
                 result = result.Substring(0, result.Length - sub_length);
                 result += $"{Environment.NewLine}/// </{doc_type}>\n";
-                Output.Text = result;
+                //Output.Text = result;
 
 
             }
@@ -97,9 +112,43 @@ namespace WpfApp2
                 result += $"/// {start_with}{new_text}{split}{last_symbol_in_row}{Environment.NewLine}";
 
                 result += $"{Environment.NewLine}/// </{doc_type}>";
-                Output.Text = result;
+                //Output.Text = result;
 
             }
+            if (doc_type == "code")
+            {
+                string sub = string.Empty;
+                var symb = "{";
+                var arr = result.Split(symb);
+
+                result = arr.Aggregate(sub, (current, row) => current + $"{row.Trim()}{symb}{Environment.NewLine}");
+                result = result.Substring(0, result.Length - 3);
+                symb = "}";
+                arr = result.Split(symb);
+                result = arr.Aggregate(sub, (current, row) => current + $"{row.Trim()}{symb}");
+                result = result.Substring(0, result.Length - 1);
+
+                arr = result.Split(Environment.NewLine);
+
+                for (var i = 0; i < arr.Length; i++)
+                {
+                    if (arr[i].Contains("```ts"))
+                    {
+                        arr[i] = arr[i].Replace('\t', ' ');
+                    }
+
+                    if (arr[i].EndsWith("```"))
+                        arr[i] = arr[i].Replace("```", $"{Environment.NewLine}/// ```");
+                    if (arr[i].StartsWith($"///"))
+                        continue;
+                    arr[i] = arr[i].Insert(0, $"/// {start_with}");
+                }
+
+                result = arr.Aggregate(sub, (current, row) => current + $"{row}{Environment.NewLine}");
+
+            }
+            Output.Text = result;
+
             try
             {
                 Clipboard.SetText(result);
