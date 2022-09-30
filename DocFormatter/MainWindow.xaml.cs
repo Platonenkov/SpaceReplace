@@ -22,7 +22,7 @@ namespace WpfApp2
         {
             if (Sender is not TextBox { })
                 return;
-            if (true)
+            if (autoBox.IsChecked==true)
                 if (Input.Text.Contains("```ts"))
                 {
 
