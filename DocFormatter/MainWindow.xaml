@@ -9,7 +9,7 @@
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d"
         Topmost="{Binding IsChecked ,ElementName=check}"
-        Width="600"
+        Width="800"
         Height="600">
     <Grid>
         <Grid.RowDefinitions>
@@ -26,13 +26,36 @@
                       IsChecked="True"
                       DockPanel.Dock="Right"
                       Margin="5,0" />
+            <CheckBox x:Name="addBr"
+                      Content="br tag"
+                      IsChecked="True"
+                      DockPanel.Dock="Right"
+                      Click="AddBr_OnClick"
+                      Margin="5,0" />
 
             <TextBox x:Name="Symbols"
                      Margin="5,5"
+                     Width="250"
                      TextChanged="Input_OnTextChanged"
                      mah:TextBoxHelper.ClearTextButton="True"
                      mah:TextBoxHelper.Watermark="Symbols to remove, queue" />
-
+            <TextBox x:Name="Doc"
+                     Margin="5,5"
+                     Width="100"
+                     TextChanged="Input_OnTextChanged"
+                     mah:TextBoxHelper.ClearTextButton="True"
+                     mah:TextBoxHelper.Watermark="Doc type"/>
+            <TextBox x:Name="SplitSymbol"
+                     Margin="5,5"
+                     Width="50"
+                     TextChanged="Input_OnTextChanged"
+                     mah:TextBoxHelper.ClearTextButton="True"
+                     mah:TextBoxHelper.Watermark="New row symbol"/>
+            <TextBox x:Name="StartWith"
+                     Margin="5,5"
+                     TextChanged="Input_OnTextChanged"
+                     mah:TextBoxHelper.ClearTextButton="True"
+                     mah:TextBoxHelper.Watermark="Row start with"/>
         </DockPanel>
         <ScrollViewer Grid.Row="1">
             <TextBox x:Name="Input"
